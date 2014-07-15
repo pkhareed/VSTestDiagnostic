@@ -1,0 +1,67 @@
+VSTestDiagnostic
+================
+
+Diagnostic tool for helping Visual Stuido Test tools customers
+
+Name
+
+vstest.diag - Diagnostic tool for the Visual Studio Unit Test framework
+
+
+
+Synopsis
+
+vstest.diag (/EnableLogs|/DisableLogs)
+
+
+
+Description
+
+This tool enables diagnostic log collection for various unit test framework components. 
+
+It will collect following logs:
+
+>	DiagnosticsLog.txt (The log for this tool)
+>	WCFEtwTrace.etl (WCF log)
+>	vstest.executionengine.TpTrace.log 
+>	vstest.executionengine.x86.TpTrace.log 
+>	vstest.discoveryengine.TpTrace.log
+>	vstest.discoveryengine.x86.TpTrace.log
+>	devenv.TpTrace
+
+
+
+
+Options:
+
+/EnableLogs - Enables various TpTrace verbose logs for unit test framework executables. 
+Post this the user can execute his suite of scenarios having the issue wherein the details will be captured by the logs.
+It is recommend to run this tool again with /DisableLogs to stop collecting the verbose logs to prevent the disk space from getting filled up.
+
+
+/DisableLogs - Disables the logs if enabled earlier.
+/Help - Display this help and exit.
+
+
+
+Environment
+
+The "vstest.diag.exe" command uses the following environment variables:
+
+VS120COMNTOOLS - For determining the path of the Visual Studio 2012 installation/tools directory if one exists
+
+SystemDirectory – For determining the C:\Windows\System32 or C:\Windows\SysWOW64 directory path based on the target machine architecture
+
+NewLine - For helping print the correct format of newline in output logs repective to the target system
+
+TickCount - To get the current time elapsed in the form of clock ticks since system was up to format the log output
+
+
+
+Example
+Below is a typical usage of this tool. All commands are run from Administrator command prompt.
+
+$ vstest.diag.exe /enablelogs
+$ vstest.console.exe mytests.dll # run your unit tests that reproduce a bug in the product
+$ vstest.diag.exe /disablelogs
+$ # copy logs from %temp%
