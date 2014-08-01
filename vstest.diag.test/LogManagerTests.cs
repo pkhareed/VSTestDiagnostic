@@ -1,9 +1,10 @@
-﻿using System.IO;
-
-namespace vstest.diag.test
+﻿namespace vstest.diag.test
 {
     using System;
+    using System.IO;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using FluentAssertions;
 
     using vstest.diag.Utilities;
@@ -64,15 +65,14 @@ namespace vstest.diag.test
         [TestMethod]
         public void EnableLogsEnablesWcfLogs()
         {
+            var system32Path = Path.Combine(Environment.GetEnvironmentVariable("WINDIR"), "system32");
+            var logmanCommand = "logman.exe start WCFETWTracing -p \"Microsoft-Windows-Application Server-Applications\" 0xFFFFFFFF  0x5 -bs 64 -nb 120 320 -ets -ct perf -f bincirc -max 500 -o";
             var testInvokeExe = new TestInvoke();
             LogManager.EnableLogs(testInvokeExe);
 
             testInvokeExe.commandCalled.Should().NotBeNullOrEmpty();
-            testInvokeExe.commandCalled.Should()
-                .StartWith(
-                    "logman.exe start WCFETWTracing -p \"Microsoft-Windows-Application Server-Applications\" 0xFFFFFFFF  0x5 -bs 64 -nb 120 320 -ets -ct perf -f bincirc -max 500 -o");
+            testInvokeExe.commandCalled.Should().StartWith(system32Path + Path.DirectorySeparatorChar + logmanCommand);
             testInvokeExe.commandCalled.Should().EndWith("WCFEtwTrace.etl");
         }
-
     }
 }
